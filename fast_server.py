@@ -53,4 +53,4 @@ def delete_user(user_id: int):
     return {"message": "User deleted successfully"}
 
 if __name__ == "__main__":
-    uvicorn.run(app, port=1991)
+    uvicorn.run(app, host="14.225.207.9", port=1991)
