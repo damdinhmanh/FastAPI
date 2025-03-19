@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
 
@@ -28,6 +28,20 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+@app.post("/uploadfile")
+async def create_upload_file(file: UploadFile):
+    try:
+        file_path = f"/home/test_server/upload_data/{file.filename}"
+        with open(file_path, "wb") as f:
+            f.write(file.file.read())
+        print("File server saved successfully!")
+    except Exception as e:
+        return {"message": e.args}
+
+    return {
+        "filename": file.filename,
+        "content_type": file.content_type,
+    }
 
 @app.get("/get_user")
 def get_user(user_id: int):
