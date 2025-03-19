@@ -1,4 +1,5 @@
 from fastapi import FastAPI, UploadFile
+from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
 
@@ -42,6 +43,17 @@ async def create_upload_file(file: UploadFile):
         "filename": file.filename,
         "content_type": file.content_type,
     }
+
+@app.get("/get_file")
+def get_file(filename: str):
+    file_path = f"/home/test_server/upload_data/{filename}"
+
+    return FileResponse(
+        path=file_path,
+        media_type="application/octet-stream",
+        filename=filename,
+    )
+
 
 @app.get("/get_user")
 def get_user(user_id: int):
